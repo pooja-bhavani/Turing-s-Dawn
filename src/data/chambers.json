@@ -1,0 +1,112 @@
+{
+  "chambers": [
+    {
+      "id": "ch1-first-light",
+      "type": "caesar",
+      "title": "First Light",
+      "prompt": "A glyph-line glows on the wall, its letters shifted by the hours of lost daylight. Restore the word and the dark will retreat.",
+      "payload": { "cipherText": "GDZQ", "shift": 3 },
+      "solution": "DAWN",
+      "lightReward": 22,
+      "keyFragment": "D",
+      "hints": [
+        "Each letter has slid the same distance through the alphabet.",
+        "This is a Caesar shift. Try moving every letter backward by a fixed amount.",
+        "Shift each letter back by 3: G → D, D → A …"
+      ]
+    },
+    {
+      "id": "ch2-binary-sunrise",
+      "type": "binary",
+      "title": "The Binary Sunrise",
+      "prompt": "The horizon blinks in ones and zeros. Decode the message the rising sun is sending.",
+      "payload": { "encoding": "ascii8", "bits": "01010011 01010101 01001110" },
+      "solution": "SUN",
+      "lightReward": 24,
+      "keyFragment": "A",
+      "hints": [
+        "Light on, light off — group the blinks into bytes of 8.",
+        "Each 8-bit group is one ASCII character.",
+        "01010011 = 83 = 'S'. Continue for each byte."
+      ]
+    },
+    {
+      "id": "ch3-logic-garden",
+      "type": "logic",
+      "title": "Logic Gate Garden",
+      "prompt": "Three sun-lamps feed a gate network. Set the inputs so the final lamp (OUT) glows true. Answer like A=1,B=0,C=1.",
+      "payload": {
+        "inputs": ["A", "B", "C"],
+        "gates": [
+          { "op": "XOR", "in": ["A", "B"], "out": "X" },
+          { "op": "AND", "in": ["X", "C"], "out": "OUT" }
+        ],
+        "target": true
+      },
+      "solution": "A=1,B=0,C=1",
+      "lightReward": 26,
+      "keyFragment": "W",
+      "hints": [
+        "Work backward from the lamp you need lit.",
+        "OUT is an AND gate, so both X and C must be true.",
+        "X = A XOR B must be 1, and C must be 1. A=1, B=0, C=1 works."
+      ]
+    },
+    {
+      "id": "ch4-pattern-of-days",
+      "type": "pattern",
+      "title": "Pattern of Days",
+      "prompt": "The solstice calendar spirals outward: 1, 2, 3, 5, 8, ? — name the next length of day.",
+      "payload": { "sequence": [1, 2, 3, 5, 8, "?"] },
+      "solution": "13",
+      "lightReward": 24,
+      "keyFragment": "",
+      "hints": [
+        "Look at how each day relates to the days before it.",
+        "Each number is the sum of the two before it.",
+        "8 + 5 = 13."
+      ]
+    },
+    {
+      "id": "ch5-the-bombe",
+      "type": "turing",
+      "title": "The Bombe",
+      "prompt": "A tape of symbols, a handful of rules. Become the machine: run it until it halts, then read the tape.",
+      "payload": {
+        "tape": "1011",
+        "head": 0,
+        "state": "A",
+        "rules": [
+          { "state": "A", "read": "1", "write": "0", "move": "R", "next": "A" },
+          { "state": "A", "read": "0", "write": "1", "move": "R", "next": "B" },
+          { "state": "B", "read": "1", "write": "1", "move": "R", "next": "B" },
+          { "state": "B", "read": "", "write": "", "move": "-", "next": "HALT" }
+        ],
+        "targetTape": "0111"
+      },
+      "solution": "0111",
+      "lightReward": 28,
+      "keyFragment": "N",
+      "hints": [
+        "You are the machine: read the cell under the head, find the matching rule, obey it.",
+        "Each rule tells you what to write, which way to step, and your next state.",
+        "Apply the rules left to right until HALT, then read the tape: 0111."
+      ]
+    },
+    {
+      "id": "ch6-dawn-key",
+      "type": "dawnkey",
+      "title": "The Dawn Key",
+      "prompt": "Every chamber gave you a letter. Together they are the key that unlocks the morning. Decrypt the final glyph-line.",
+      "payload": { "cipherText": "GASA", "keySource": "fragments" },
+      "solution": "DAWN",
+      "lightReward": 100,
+      "keyFragment": "",
+      "hints": [
+        "The letters you collected spell the key, in the order you found them.",
+        "This is a Vigenère cipher — use your collected key word to decrypt.",
+        "Key = D, A, W, N. Decrypt GASA with it to reach the dawn."
+      ]
+    }
+  ]
+}

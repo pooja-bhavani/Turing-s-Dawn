@@ -1,0 +1,30 @@
+{
+  "intro": "On the longest day of the year, the light began to run out. They left me chambers of code — and only my mind to hold back the dark.",
+  "beats": [
+    {
+      "afterChamberId": "ch1-first-light",
+      "line": "They counted the day's losses in minutes of light. I learned to buy them back in letters."
+    },
+    {
+      "afterChamberId": "ch2-binary-sunrise",
+      "line": "Even the sun speaks in ones and zeros, if you are patient enough to listen."
+    },
+    {
+      "afterChamberId": "ch3-logic-garden",
+      "line": "Truth is just a lamp wired correctly. I am learning which switches to throw."
+    },
+    {
+      "afterChamberId": "ch4-pattern-of-days",
+      "line": "The days fold into one another. Knowing the pattern, I can already feel tomorrow."
+    },
+    {
+      "afterChamberId": "ch5-the-bombe",
+      "line": "He built a machine to think in his place, so that others might see the morning. Tonight, I am the machine."
+    },
+    {
+      "afterChamberId": "ch6-dawn-key",
+      "line": "The key turns. The horizon warms. Whatever the dark took, the light always returns — and so do we."
+    }
+  ],
+  "epilogue": "Solstice Almanac — June has long been a month of returning light: of Pride and Juneteenth, of midsummer fires and the year's brightest dawn. This game is a small ode to Alan Turing, who broke codes to push back a darkness of his own, and whose dawn came far too late. Keep the light."
+}
