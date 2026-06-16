@@ -1,5 +1,8 @@
 # 🌅 Turing's Dawn — Race the dark
 
+<img width="1463" height="884" alt="image" src="https://github.com/user-attachments/assets/328784ee-4cbb-4385-a996-a111815a31b5" />
+
+
 > Break the ciphers before the longest day's light runs out.
 
 A story-based browser puzzle game for the **DEV June Solstice Game Jam 2026**. You're stranded in the seam between the longest day and the shortest night. Daylight is a draining resource — the only way to hold back the dark is to break the codes left behind by a mind that once did the same.
@@ -32,6 +35,9 @@ Each chamber is its own hands-on instrument, not a text box: a **Caesar dial** y
 
 The hint system has one entry point (`getHint`) that returns a tiered, **non-spoiler** nudge. Each chamber ships three authored hints that escalate gently — reframe the goal, name the technique, then point at the next concrete step — so a stuck player is never stranded and never simply handed the answer.
 
+<img width="1466" height="800" alt="image" src="https://github.com/user-attachments/assets/90533d29-a59d-445b-a7a1-d7c971a05b99" />
+
+
 ## 🚀 Run locally
 
 ```bash
@@ -44,6 +50,9 @@ npm run build      # production build
 ## ♿ Accessibility
 
 Keyboard-playable, `prefers-reduced-motion` aware, ARIA live regions for the light meter / hints / narrative, color never the sole signal, and the timer pauses outside active play so it's never unfair.
+
+<img width="1470" height="884" alt="Screenshot 2026-06-16 at 7 25 00 PM" src="https://github.com/user-attachments/assets/6cecf79f-2cd5-416f-adfb-c19fce9fa9cd" />
+
 
 ## 📜 License
 
