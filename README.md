@@ -1,4 +1,4 @@
-# 🌅 Turing's Dawn — Race the dark
+# Turing's Dawn — Race the dark
 
 <img width="1463" height="884" alt="image" src="https://github.com/user-attachments/assets/328784ee-4cbb-4385-a996-a111815a31b5" />
 
