@@ -23,7 +23,7 @@ src/
   game/        pure, unit-tested engine — ciphers, verifiers, scoring (no React)
   data/        chambers.json + narrative.json  (chambers = data, not code)
   hooks/       useLightMeter (rAF drain), useGameState (state machine)
-  ai/          hintFallback — spoiler-safe tiered hints
+  ai/          gemini (live hint client) + hintFallback (tiered, spoiler-safe)
   components/  SolsticeBackground, LightMeter, ChamberShell, puzzles/, end screens
 ```
 
@@ -31,9 +31,16 @@ The engine is **pure TypeScript** with full Vitest coverage — every chamber in
 
 Each chamber is its own hands-on instrument, not a text box: a **Caesar dial** you rotate to read the glyphs, **binary sunrise lamps** you tap to read each byte, a **logic-gate garden** of switches that light the network live, **sequence tiles** for the pattern, an interactive **Turing machine** ("The Bombe") you step rule-by-rule until it halts, and a **Vigenère "Dawn Key"** that aligns your collected fragments under the cipher.
 
-## 💡 Tiered hint system
+## 💡 Tiered hint system — powered by Google Gemini
 
-The hint system has one entry point (`getHint`) that returns a tiered, **non-spoiler** nudge. Each chamber ships three authored hints that escalate gently — reframe the goal, name the technique, then point at the next concrete step — so a stuck player is never stranded and never simply handed the answer.
+The hint system has one entry point (`getHint`) that returns a tiered, **non-spoiler** nudge. When a Gemini key is configured, hints are **generated live by `gemini-2.5-flash`** and adapt to the player's *actual attempt* — escalating gently from reframing the goal, to naming the technique, to pointing at the next concrete step. Each chamber also ships three **authored** hints that act as the spoiler ceiling and as an offline fallback, so a stuck player is never stranded, never handed the answer, and the game runs with or without a key.
+
+**Spoiler-safe by design:** the canonical `solution` is *never* sent to Gemini. The authored hint caps how specific the model is allowed to get, and a strict system instruction forbids revealing the answer.
+
+```bash
+cp .env.example .env        # then add your key from https://aistudio.google.com/apikey
+# VITE_GEMINI_API_KEY=...    (absent → authored hints only)
+```
 
 <img width="1466" height="800" alt="image" src="https://github.com/user-attachments/assets/90533d29-a59d-445b-a7a1-d7c971a05b99" />
 

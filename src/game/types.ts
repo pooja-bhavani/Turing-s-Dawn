@@ -1,6 +1,6 @@
 // ── Core domain types ──────────────────────────────────────────────
 // Every chamber in chambers.json conforms to `Puzzle`, so the engine,
-// the verifier, and the (future) AI hint system can treat any puzzle
+// the verifier, and the Gemini-powered hint system can treat any puzzle
 // uniformly. Adding a chamber = data, not code.
 
 export type PuzzleType =

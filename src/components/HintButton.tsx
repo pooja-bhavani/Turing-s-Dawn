@@ -51,7 +51,7 @@ export function HintButton({ puzzle, attempt, onHintUsed }: Props) {
             className="mt-3 max-w-prose text-sm leading-relaxed text-amber-100/85"
           >
             <span className="mr-1 opacity-60">
-              💡 Hint {tier}/{maxTier}:
+              {result.source === 'gemini' ? '✨ Gemini hint' : '💡 Hint'} {tier}/{maxTier}:
             </span>
             {result.hint}
           </motion.p>

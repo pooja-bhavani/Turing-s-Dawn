@@ -31,7 +31,7 @@ To keep it fair (never the cheap kind of hard):
 
 - The timer **pauses** during narrative beats and end screens — you only lose light while actually playing.
 - Failure is **soft**: run out of light and the chamber waits. You rekindle and retry, no progress lost.
-- Hints are **tiered and spoiler-safe**: three escalating nudges per chamber — reframe the goal, name the technique, point at the next step — so you're never stranded and never simply handed the answer.
+- Hints are **tiered, spoiler-safe, and powered by Google Gemini**: `gemini-2.5-flash` reads your *actual attempt* and writes a fresh nudge that escalates gently — reframe the goal, name the technique, point at the next step — so you're never stranded and never simply handed the answer. Authored hints cap the specificity and serve as an offline fallback.
 
 ## The chamber I'm proudest of: becoming the machine
 
@@ -76,9 +76,50 @@ This mattered to me as much as the puzzles:
 - **Color is never the only signal** — states carry text and shape too.
 - **Audio is synthesized** (no asset files) with a mute toggle that persists, and it only starts on your first click, so nothing ambushes you.
 
+## Best Google AI Usage — the living hint guide
+
+**How I leveraged Google AI:** the **Gemini API** (`gemini-2.5-flash`) is embedded directly in the build as the game's hint guide. I prototyped the prompt and the spoiler guardrails in **Google AI Studio**, then ship the call straight from the static client — no other backend. When you ask for help, Gemini reads the puzzle *and the attempt you just typed* and writes a fresh, in-character coach line that escalates with the tier — reframe the goal, then name the technique, then point at the next step.
+
+What I'm proud of here is the **spoiler-safety architecture**, because letting an LLM near a puzzle game is dangerous: it loves to blurt the answer. So:
+
+- The canonical `solution` is **never** sent to Gemini. The model never sees the answer it could leak.
+- Each chamber's authored hint is passed as a **ceiling of specificity** — Gemini may rephrase and adapt, but is instructed never to exceed it.
+- A strict `systemInstruction` forbids stating the decoded word and enforces the 1–2 sentence, tier-appropriate, dawn-flavored voice.
+- If there's no key or the call fails, `getHint` falls back to the authored hints — so **the game is fully playable with or without AI**, and AI *enhances* rather than gates the experience.
+
+It's a single clean seam (`getHint` → Gemini → authored fallback), so the rest of the game neither knows nor cares where a hint came from:
+
+```ts
+// src/ai/gemini.ts — the solution is never in the payload; the authored
+// hint caps specificity; a system instruction forbids revealing the answer.
+const res = await fetch(`${ENDPOINT(MODEL)}?key=${API_KEY}`, {
+  method: 'POST',
+  body: JSON.stringify({
+    systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
+    contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+    generationConfig: { temperature: 0.8, maxOutputTokens: 120, topP: 0.95 },
+  }),
+});
+```
+
+```ts
+// src/ai/hintFallback.ts — one seam, graceful fallback.
+export async function getHint(req: HintRequest): Promise<HintResult> {
+  const fallback = authoredHint(req);
+  if (!isGeminiConfigured()) return fallback;
+  const aiHint = await generateGeminiHint({
+    puzzle: req.puzzle,
+    tier: req.tier,
+    attempt: req.attempt,
+    referenceHint: fallback.hint, // authored hint caps how specific Gemini may get
+  });
+  return aiHint ? { source: 'gemini', hint: aiHint } : fallback;
+}
+```
+
 ## Tech
 
-React + TypeScript + Vite, Tailwind v4, Framer Motion for the juice, the Web Audio API for a drone / heartbeat / solve-chime built entirely in code, and Vitest for the engine. No backend, no keys, no install — it's a static site.
+React + TypeScript + Vite, Tailwind v4, Framer Motion for the juice, the Web Audio API for a drone / heartbeat / solve-chime built entirely in code, **Google Gemini for adaptive hints**, and Vitest for the engine. No game backend — it's a static site that calls the Gemini API directly.
 
 ## What I learned
 
